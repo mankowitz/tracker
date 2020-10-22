@@ -41,6 +41,5 @@ class AppServiceProvider extends ServiceProvider
                 'message' => Session::get('message'),
             ];
         });
-
     }
 }
