@@ -32,7 +32,7 @@ class EncounterController extends Controller
      */
     public function create()
     {
-        return Inertia::render('Encounter/Edit', [
+        return Inertia::render('Encounter/EditModal', [
             'encounter'=>false,
             'users' => User::all(),
         ]);

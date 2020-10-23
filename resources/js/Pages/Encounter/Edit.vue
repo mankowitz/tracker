@@ -19,7 +19,7 @@
               v-slot="opt"
               display="Last Name"
               name="lastname"
-              :value="form.lastname"
+              v-model="form.lastname"
               @found="populate"
             >
               <span>

@@ -5,6 +5,7 @@
         Active Patients
       </h2>
     </template>
+    <edit-modal />
     <div class="py-12">
       <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
         <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg px-4 py-4">
@@ -94,6 +95,7 @@
 </template>
 <script>
 import AppLayout from "./../../Layouts/AppLayout";
+import EditModal from "./EditModal";
 
 export default {
   props: ["data", "errors"],
@@ -107,10 +109,11 @@ export default {
   },
   methods: {
     edit(id) {
-      window.open(route("encounter.edit", id));
+//      window.open(route("encounter.edit", id));
+//      this.$inertia.visit(this.route('encounter.create', {contact: contact.id}), {only: ['contact']})
     },
     create() {
-      window.open(route("encounter.create"));
+      this.$inertia.visit(this.route('encounter.create'));
     },
     update(field, encounter) {
       let payload = {
