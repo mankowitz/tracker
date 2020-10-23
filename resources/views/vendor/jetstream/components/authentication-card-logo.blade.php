@@ -1,3 +1,3 @@
 <a href="/">
-    <img src="/img/envision-logo.png">
+    <img src="/img/stationmd-logo-blue.png">
 </a>
