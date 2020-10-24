@@ -1,7 +1,7 @@
 <template>
     <transition name="fade-shrink-in" appear>
       <div
-        v-show="encounter || 1"
+        v-show="encounter || create"
         @click="closeModal()"
         class="absolute top-0 left-0 h-full w-full"
         style="background-color: hsla(0, 0%, 0%, 0.5); z-index: 99998"
@@ -164,7 +164,7 @@ import Autocomplete from "./Autocomplete";
 import FormSelect from "./FormSelect";
 
 export default {
-  props: ["users", "encounter", "errors"],
+  props: ["users", "encounter", "errors", "create"],
   data() {
     return {
       showHistories: false,
@@ -206,6 +206,7 @@ export default {
     },
     submit() {
       this.$inertia.post("/encounter", this.form);
+      this.create = false;
     },
     populate(e) {
       this.form.lastname = e.lastname;

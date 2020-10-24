@@ -34,6 +34,7 @@ class EncounterController extends Controller
     {
         return Inertia::render('Encounter/EditModal', [
             'encounter'=>false,
+            'create'=>true,
             'users' => User::all(),
         ]);
     }
@@ -76,7 +77,7 @@ class EncounterController extends Controller
         $encounter->patient_id = $patient->id;
         $encounter->save();
 
-        return redirect('/encounter'); 
+        return redirect('/encounter');
     }
 
     /**
@@ -114,9 +115,7 @@ class EncounterController extends Controller
      */
     public function update(Request $request, Encounter $encounter)
     {
-        if (\in_array($request->field_name, ['comments','is_complete','provider_id','chief_complaint'])) {
-            $encounter->update([$request->field_name => $request->new_value]);
-        }
+        $encounter->update([$request->field_name => $request->new_value]);
         return Redirect::route('encounter.index');
     }
 
