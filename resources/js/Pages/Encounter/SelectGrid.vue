@@ -4,7 +4,7 @@
       newValue || "None"
     }}</span>
 
-    <jet-dialog-modal :show="tableVisible" @close="tableVisible = false" max-width="3/4">
+    <jet-dialog-modal :show="tableVisible" @close="tableVisible = false" max-width="2xl">
       <template #title> Select Spot </template>
 
       <template #content>

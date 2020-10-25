@@ -46,7 +46,7 @@
                 </td>
                 <td class="border px-6 py-2">
                   <div class="inline-block relative w-20">Facility:</div>
-                  <div class="inline-block relative w-64">
+                  <div class="inline-block relative w-48">
                     <select
                       class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
                       v-model="encounter.facility"
@@ -83,7 +83,7 @@
                   <br />
 
                   <div class="inline-block relative w-20">Location:</div>
-                  <div class="inline-block relative w-64">
+                  <div class="inline-block relative w-48">
                     <select
                       class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
                       v-model="encounter.location"
@@ -120,30 +120,47 @@
 
                   <br />
                   <div class="inline-block relative w-20">Spot:</div>
-                    <select-grid
-                      v-model="encounter.spot"
-                      @input="update('spot', encounter)"
-                    />
+                  <select-grid
+                    v-model="encounter.spot"
+                    @input="update('spot', encounter)"
+                  />
                 </td>
                 <td>
-                  <select
-                    v-model="encounter.provider_id"
-                    @change="update('provider_id', encounter)"
-                  >
-                    <option
-                      v-for="user in $page.users"
-                      :value="user.id"
-                      :key="user.id"
-                      :selected="
-                        user.id == encounter.provider_id ? 'selected' : ''
-                      "
+                  <div class="inline-block relative w-48">
+                    <select
+                      class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+                      v-model="encounter.provider_id"
+                      @change="update('provider_id', encounter)"
                     >
-                      {{ user.name }}
-                    </option>
-                  </select>
+                      <option
+                        v-for="user in $page.users"
+                        :value="user.id"
+                        :key="user.id"
+                        :selected="
+                          user.id == encounter.provider_id ? 'selected' : ''
+                        "
+                      >
+                        {{ user.name }}
+                      </option>
+                    </select>
+                    <div
+                      class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700"
+                    >
+                      <svg
+                        class="fill-current h-4 w-4"
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 20 20"
+                      >
+                        <path
+                          d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"
+                        />
+                      </svg>
+                    </div>
+                  </div>
                 </td>
                 <td class="border px-4 py-2">
                   <textarea
+                    class="rounded-lg resize-none w-full h-full"
                     @keydown.enter="update('chief_complaint', encounter)"
                     @blur="update('chief_complaint', encounter)"
                     v-model="encounter.chief_complaint"
@@ -205,6 +222,13 @@ export default {
       return this.$page.encounters.filter((i) => i.is_complete == 0);
     },
   },
+  mounted() {
+    setInterval(
+      () =>
+        this.$inertia.reload({ only:["encounters"], preserveScroll: true }),
+      10000
+    );
+  },
   methods: {
     edit(id) {
       //      window.open(route("encounter.edit", id));
@@ -219,7 +243,9 @@ export default {
         new_value: encounter[field],
         _method: "PUT",
       };
-      this.$inertia.post("/encounter/" + encounter.id, payload, { preserveScroll: true });
+      this.$inertia.post("/encounter/" + encounter.id, payload, {
+        preserveScroll: true,
+      });
     },
   },
 };
