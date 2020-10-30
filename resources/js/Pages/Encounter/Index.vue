@@ -3,6 +3,12 @@
     <template #header>
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">
         Active Patients
+        <button
+          @click="$inertia.visit('/print-dashboard')"
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 text-xs rounded my-3 float-right"
+        >
+          Print Page
+        </button>
       </h2>
     </template>
     <edit-modal />
@@ -45,8 +51,8 @@
                 >
                   {{ encounter.patient.lastname }},
                   {{ encounter.patient.firstname }}
-                  <br />DOB: {{ encounter.patient.dob }}; Sex:
-                  {{ encounter.patient.sex }}
+                  ({{ ageSex(encounter.patient) }}) <br />DOB:
+                  {{ [encounter.patient.dob, "YYYY-MM-DD"] | moment("M/D/Y") }}
                 </td>
                 <td class="border px-6 py-2">
                   <div class="inline-block relative w-20">Facility:</div>
@@ -201,7 +207,6 @@
 <script>
 import AppLayout from "./../../Layouts/AppLayout";
 import EditModal from "./EditModal";
-import SelectGrid from "./SelectGrid";
 
 export default {
   props: ["data", "errors"],
@@ -220,7 +225,6 @@ export default {
   components: {
     AppLayout,
     EditModal,
-    SelectGrid,
   },
   computed: {
     encounters() {
@@ -235,6 +239,10 @@ export default {
     );
   },
   methods: {
+    ageSex(pt) {
+      return this.$moment().diff(pt.dob, "years", false) + "/" + pt.sex;
+    },
+
     edit(id) {
       this.$inertia.visit(this.route("encounter.edit", { encounter: id }));
     },

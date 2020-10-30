@@ -23,6 +23,7 @@ Route::get('/', function () {
 Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::get('/dashboard', [EncounterController::class, 'index'])->name('dashboard');
     Route::get('/patient/search', [PatientController::class, 'search']);
+    Route::get('/print-dashboard', [EncounterController::class, 'print'])->name('print');
     Route::resource('user', UserController::class);
     Route::resource('encounter', EncounterController::class);
     Route::resource('patient', PatientController::class);

@@ -149,7 +149,7 @@ export default {
       form: {
         firstname: this.encounter?.patient?.firstname,
         lastname: this.encounter?.patient?.lastname,
-        dob: this.encounter?.patient?.dob,
+        dob: this.$moment(this.encounter?.patient?.dob).format("M/D/Y"),
         mrn: this.encounter?.patient?.mrn,
         sex: this.encounter?.patient?.sex,
         pmh: this.encounter?.patient?.histories?.pmh,

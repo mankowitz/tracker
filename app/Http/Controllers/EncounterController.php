@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Redirect;
 class EncounterController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Display a listing of encounters.
      *
      * @return \Illuminate\Http\Response
      */
@@ -22,6 +22,18 @@ class EncounterController extends Controller
         return Inertia::render('Encounter/Index', [
             'users' => User::all(),
             'encounters' => Encounter::with('patient')->where('is_complete', 0)->get(),
+        ]);
+    }
+
+    /**
+     * Display a listing of encounters for print.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function print()
+    {
+        return Inertia::render('Encounter/IndexPrint', [
+            'encounters' => Encounter::with('patient')->with('provider:name,id')->where('is_complete', 0)->get(),
         ]);
     }
 
