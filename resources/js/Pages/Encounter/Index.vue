@@ -37,7 +37,7 @@
               <tr class="bg-gray-100">
                 <th class="px-4 py-2">Name</th>
                 <th class="px-4 py-2">Facility<br />Location<br />Spot</th>
-                <th class="px-4 py-2">Provider</th>
+                <th class="px-4 py-2">Provider<br />Nurse<br />Case Mgr</th>
                 <th class="px-4 py-2">Chief Complaint</th>
                 <th class="px-4 py-2">Comments</th>
                 <th class="px-4 py-2 print:hidden">Action</th>
@@ -54,11 +54,11 @@
                   ({{ ageSex(encounter.patient) }}) <br />DOB:
                   {{ [encounter.patient.dob, "YYYY-MM-DD"] | moment("M/D/Y") }}
                 </td>
-                <td class="border px-6 py-2">
-                  <div class="inline-block relative w-20">Facility:</div>
+                <td class="border px-4 py-2">
+                  <div class="inline-block relative w-14">Fac:</div>
                   <div class="inline-block relative w-48">
                     <select
-                      class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+                      class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
                       v-model="encounter.facility"
                       @change="update('facility', encounter)"
                     >
@@ -92,10 +92,10 @@
                   </div>
                   <br />
 
-                  <div class="inline-block relative w-20">Location:</div>
+                  <div class="inline-block relative w-14">Loc:</div>
                   <div class="inline-block relative w-48">
                     <select
-                      class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+                      class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
                       v-model="encounter.location"
                       @change="update('location', encounter)"
                     >
@@ -129,7 +129,7 @@
                   </div>
 
                   <br />
-                  <div class="inline-block relative w-20">Spot:</div>
+                  <div class="inline-block relative w-14">Spot:</div>
                   <input
                     class="inline-block relative w-48"
                     v-model="encounter.spot"
@@ -137,9 +137,10 @@
                   />
                 </td>
                 <td>
+                  <div class="inline-block relative w-14">Prov:</div>
                   <div class="inline-block relative w-48">
                     <select
-                      class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline"
+                      class="block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-2 py-2  rounded shadow leading-tight focus:outline-none focus:shadow-outline"
                       v-model="encounter.provider_id"
                       @change="update('provider_id', encounter)"
                     >
@@ -168,6 +169,21 @@
                       </svg>
                     </div>
                   </div>
+                  <br />
+                  <div class="inline-block relative w-14">RN:</div>
+                  <input
+                    class="inline-block relative w-48"
+                    v-model="encounter.nurse"
+                    @blur="update('nurse', encounter)"
+                    placeholder="Nurse"
+                  /><br />
+                  <div class="inline-block relative w-14">CM:</div>
+                  <input
+                    class="inline-block relative w-48"
+                    v-model="encounter.case_manager"
+                    @blur="update('case_manager', encounter)"
+                    placeholder="Case Manager"
+                  />
                 </td>
                 <td class="border px-4 py-2">
                   <textarea

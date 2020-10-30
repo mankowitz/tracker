@@ -31,18 +31,23 @@
                 {{ [encounter.patient.dob, "YYYY-MM-DD"] | moment("M/D/Y") }}
               </td>
               <td class="border px-6 py-2">
-                <div class="inline-block relative w-20">Facility:</div>
+                <div class="inline-block relative w-15">Fac:</div>
                 {{ encounter.facility }}
                 <br />
-                <div class="inline-block relative w-20">Location:</div>
+                <div class="inline-block relative w-15">Loc:</div>
                 {{ encounter.location }}
                 <br />
-                <div class="inline-block relative w-20">Spot:</div>
+                <div class="inline-block relative w-15">Spot:</div>
                 {{ encounter.spot }}
                 <br />
               </td>
               <td class="border px-2 py-2">
+                <div class="inline-block relative w-15">Prov:</div>
                 {{ providerName(encounter.provider) }}
+                <div class="inline-block relative w-15">RN:</div>
+                {{ providerName(encounter.nurse) }}
+                <div class="inline-block relative w-15">CM:</div>
+                {{ providerName(encounter.case_manager) }}
               </td>
               <td class="border px-2 py-2">{{ encounter.chief_complaint }}</td>
               <td class="border px-2 py-2">{{ encounter.comments }}</td>
