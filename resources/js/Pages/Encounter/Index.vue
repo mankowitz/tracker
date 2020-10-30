@@ -256,7 +256,6 @@ export default {
 
 <style scoped>
 @media print {
-  html,
   body {
     height: auto;
     font-size: 10pt; /* changing to 10pt has no impact */
