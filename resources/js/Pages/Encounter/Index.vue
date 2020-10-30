@@ -39,11 +39,12 @@
             </thead>
             <tbody>
               <tr v-for="encounter in encounters" :key="encounter.id">
-                <td class="border px-4 py-2">
-                  <a @click="edit(encounter.id)">
-                    {{ encounter.patient.lastname }},
-                    {{ encounter.patient.firstname }}</a
-                  >
+                <td
+                  class="border px-4 py-2 cursor-pointer"
+                  @click="edit(encounter.id)"
+                >
+                  {{ encounter.patient.lastname }},
+                  {{ encounter.patient.firstname }}
                   <br />DOB: {{ encounter.patient.dob }}; Sex:
                   {{ encounter.patient.sex }}
                 </td>

@@ -56,8 +56,6 @@ class EncounterController extends Controller
             'chief_complaint' => 'required|max:50',
         ]);
 
-        $encounter = Encounter::find($request->encounter_id) ?? new Encounter;
-        $patient = Patient::find($request->patient_id) ?? new Patient;
 
         $histories = [
             "pmh" => $request->pmh,
@@ -68,11 +66,13 @@ class EncounterController extends Controller
             "fh" => $request->fh,
         ];
 
+        $patient = Patient::firstOrNew(['id'=> $request->patient_id]);
         $patient->fill($request->only(['sex','mrn','lastname','firstname']));
-        $patient->dob = (new Carbon($patient->dob))->format("Y-m-d");
+        $patient->dob = new Carbon($request->dob);
         $patient->histories = json_encode($histories);
         $patient->save();
 
+        $encounter = Encounter::firstOrNew(['id'=> $request->encounter_id]);
         $encounter->fill($request->only(['chief_complaint', 'provider_id', 'location', 'comments']));
         $encounter->patient_id = $patient->id;
         $encounter->save();
