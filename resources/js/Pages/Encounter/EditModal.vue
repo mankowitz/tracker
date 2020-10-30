@@ -171,9 +171,9 @@ export default {
       form: {
         firstname: this.encounter?.patient?.firstname,
         lastname: this.encounter?.patient?.lastname,
-        dob: this.encounter?.patient?.histories?.dob,
-        mrn: this.encounter?.patient?.histories?.mrn,
-        sex: this.encounter?.patient?.histories?.sex,
+        dob: this.encounter?.patient?.dob,
+        mrn: this.encounter?.patient?.mrn,
+        sex: this.encounter?.patient?.sex,
         pmh: this.encounter?.patient?.histories?.pmh,
         psh: this.encounter?.patient?.histories?.psh,
         meds: this.encounter?.patient?.histories?.meds,

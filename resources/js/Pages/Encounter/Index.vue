@@ -34,15 +34,18 @@
                 <th class="px-4 py-2">Provider</th>
                 <th class="px-4 py-2">Chief Complaint</th>
                 <th class="px-4 py-2">Comments</th>
-                <th class="px-4 py-2">Action</th>
+                <th class="px-4 py-2 print:hidden">Action</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="encounter in encounters" :key="encounter.id">
                 <td class="border px-4 py-2">
-                  {{ encounter.patient.lastname }},
-                  {{ encounter.patient.firstname }}<br />DOB:
-                  {{ encounter.patient.dob }}; Sex: {{ encounter.patient.sex }}
+                  <a @click="edit(encounter.id)">
+                    {{ encounter.patient.lastname }},
+                    {{ encounter.patient.firstname }}</a
+                  >
+                  <br />DOB: {{ encounter.patient.dob }}; Sex:
+                  {{ encounter.patient.sex }}
                 </td>
                 <td class="border px-6 py-2">
                   <div class="inline-block relative w-20">Facility:</div>
@@ -120,7 +123,8 @@
 
                   <br />
                   <div class="inline-block relative w-20">Spot:</div>
-                  <select-grid
+                  <input
+                    class="inline-block relative w-48"
                     v-model="encounter.spot"
                     @input="update('spot', encounter)"
                   />
@@ -174,7 +178,7 @@
                   ></textarea
                   ><br />
                 </td>
-                <td class="border px-4 py-2">
+                <td class="border px-4 py-2 print:hidden">
                   <button
                     @click="
                       encounter.is_complete = 1;
@@ -182,7 +186,7 @@
                     "
                     class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
                   >
-                    Mark Complete
+                    Discharge
                   </button>
                 </td>
               </tr>
@@ -225,14 +229,13 @@ export default {
   mounted() {
     setInterval(
       () =>
-        this.$inertia.reload({ only:["encounters"], preserveScroll: true }),
-      10000
+        this.$inertia.reload({ only: ["encounters"], preserveScroll: true }),
+      45000
     );
   },
   methods: {
     edit(id) {
-      //      window.open(route("encounter.edit", id));
-      //      this.$inertia.visit(this.route('encounter.create', {contact: contact.id}), {only: ['contact']})
+      this.$inertia.visit(this.route("encounter.edit", { encounter: id }));
     },
     create() {
       this.$inertia.visit(this.route("encounter.create"));
@@ -250,3 +253,16 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+@media print {
+  html,
+  body {
+    height: auto;
+    font-size: 10pt; /* changing to 10pt has no impact */
+  }
+  svg {
+    display: none;
+  }
+}
+</style>
