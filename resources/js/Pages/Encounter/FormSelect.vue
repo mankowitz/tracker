@@ -26,9 +26,6 @@ export default {
       this.$refs.input.focus();
     },
   },
-  mounted(){
-    console.log(this.options);
-  }
 };
 </script>
 

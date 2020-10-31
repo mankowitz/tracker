@@ -67,7 +67,6 @@ export default {
     autoComplete: function () {
       if (this.timeout) clearTimeout(this.timeout);
       this.timeout = setTimeout(() => {
-          console.log("searching...", this.searchText);
         if (this.searchText.length >= 2) {
           console.log("searching...", this.searchText);
           axios
@@ -75,7 +74,6 @@ export default {
               params: { searchText: this.searchText },
             })
             .then((response) => {
-              console.log(response);
               this.searchResults = response.data;
             });
         }

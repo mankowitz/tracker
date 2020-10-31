@@ -20,8 +20,8 @@ class EncounterController extends Controller
     public function index()
     {
         return Inertia::render('Encounter/Index', [
-            'users' => User::all(),
-            'encounters' => Encounter::with('patient')->where('is_complete', 0)->get(),
+            'users' => User::with('userType')->get(),
+            'encounters' => Encounter::with(['patient','provider:name,id','nurse:name,id','caseManager:name,id'])->where('is_complete', 0)->get(),
         ]);
     }
 
@@ -33,7 +33,7 @@ class EncounterController extends Controller
     public function print()
     {
         return Inertia::render('Encounter/IndexPrint', [
-            'encounters' => Encounter::with('patient')->with('provider:name,id')->where('is_complete', 0)->get(),
+            'encounters' => Encounter::with(['patient','provider:name,id','nurse:name,id','caseManager:name,id'])->where('is_complete', 0)->get(),
         ]);
     }
 

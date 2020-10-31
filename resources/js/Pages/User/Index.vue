@@ -31,14 +31,19 @@
                 <th class="px-4 py-2 w-20">ID</th>
                 <th class="px-4 py-2">Name</th>
                 <th class="px-4 py-2">Email</th>
+                <th class="px-4 py-2">User Type</th>
                 <th class="px-4 py-2">Action</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="row in data" :key="row.id">
+              <tr v-for="row in users" :key="row.id">
                 <td class="border px-4 py-2">{{ row.id }}</td>
                 <td class="border px-4 py-2">{{ row.name }}</td>
                 <td class="border px-4 py-2">{{ row.email }}</td>
+                <td class="border px-4 py-2">
+                  {{ row.user_type ? row.user_type.name : "None" }}
+                </td>
+
                 <td class="border px-4 py-2">
                   <button
                     @click="edit(row)"
@@ -114,6 +119,36 @@
                           {{ $page.errors.email[0] }}
                         </div>
                       </div>
+
+                      <div class="mb-4">
+                        <label
+                          for="user_type_id"
+                          class="block text-gray-700 text-sm font-bold mb-2"
+                          >User Type:</label
+                        >
+                        <select
+                          v-model="form.user_type_id"
+                          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                        >
+                          <option :value="null" disabled>
+                            Please select type
+                          </option>
+                          <option
+                            v-for="ut in userTypes"
+                            :key="ut.id"
+                            :value="ut.id"
+                          >
+                            {{ ut.name }}
+                          </option>
+                        </select>
+
+                        <div
+                          v-if="$page.errors.user_type_id"
+                          class="text-red-500"
+                        >
+                          {{ $page.errors.user_type_id[0] }}
+                        </div>
+                      </div>
                     </div>
                   </div>
                   <div
@@ -170,7 +205,7 @@
 import AppLayout from "./../../Layouts/AppLayout";
 
 export default {
-  props: ["data", "errors"],
+  props: ["users", "userTypes", "errors"],
   components: {
     AppLayout,
   },

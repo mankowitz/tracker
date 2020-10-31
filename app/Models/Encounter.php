@@ -16,7 +16,17 @@ class Encounter extends Model
 
     public function provider()
     {
-        return $this->belongsTo(User::class, 'provider_id');
+        return $this->belongsTo(User::class);
+    }
+
+    public function nurse()
+    {
+        return $this->belongsTo(User::class, 'nurse_id');
+    }
+
+    public function caseManager()
+    {
+        return $this->belongsTo(User::class, 'case_manager_id');
     }
 
     public $guarded=['id'];

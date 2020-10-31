@@ -11,8 +11,10 @@
         <form @submit.prevent="submit">
           <label for="name">Name:</label>
           <input id="name" v-model="form.name" />
-          <label for="email">Last name:</label>
+          <label for="email">E-mail:</label>
           <input id="email" v-model="form.email" />
+          <label for="user_type_id">User Type:</label>
+          <input id="user_type_id" v-model="form.user_type_id" />
           <label for="unencryptedPassword">Password:</label>
           <input id="unencryptedPassword" v-model="form.unencryptedPassword" />
           <button type="submit">Submit</button>
@@ -29,6 +31,7 @@ export default {
       form: {
         name: null,
         email: null,
+        user_type_id: 1,
         unencryptedPassword: (Math.random()+1).toString(36).substring(2,10),
       },
     };
