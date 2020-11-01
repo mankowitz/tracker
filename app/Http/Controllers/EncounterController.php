@@ -17,11 +17,26 @@ class EncounterController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $encounters = Encounter::with(['patient','provider:name,id','nurse:name,id','caseManager:name,id']);
+        if ($request->is_complete==1) {
+            if ($request->startDate && $request->endDate) {
+                $encounters = $encounters->whereBetween('created_at', [
+                    new Carbon($request->startDate),
+                    new Carbon($request->endDate)
+                ]);
+            }
+        }
+        $encounters = $encounters->where('is_complete', $request->input('is_complete', 0));
         return Inertia::render('Encounter/Index', [
             'users' => User::with('userType')->get(),
-            'encounters' => Encounter::with(['patient','provider:name,id','nurse:name,id','caseManager:name,id'])->where('is_complete', 0)->get(),
+            'encounters' => $encounters->get(),
+            'params' => [
+                'is_complete' => $request->input('is_complete', 0),
+                'startDate' => $request->input('startDate', \Carbon\Carbon::now()->add(-2, "week")->format("m/d/Y")),
+                'endDate' => $request->input('endDate', \Carbon\Carbon::now()->add(1, "day")->format("m/d/Y")),
+            ]
         ]);
     }
 
@@ -128,7 +143,7 @@ class EncounterController extends Controller
     public function update(Request $request, Encounter $encounter)
     {
         $encounter->update([$request->field_name => $request->new_value]);
-        return Redirect::route('encounter.index');
+        return Redirect::route('encounter.index', $request->queryString);
     }
 
     /**

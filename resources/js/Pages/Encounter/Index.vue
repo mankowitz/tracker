@@ -2,7 +2,11 @@
   <app-layout>
     <template #header>
       <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-        Active Patients sorted by:
+        <select v-model="is_complete" @change="refetch">
+          <option value="0">Active</option>
+          <option value="1">Discharged</option>
+        </select>
+        Patients sorted by:
         <select v-model="sortBy">
           <option value="arr">Arrival</option>
           <option value="name">Name</option>
@@ -14,6 +18,12 @@
           <option value="rn">Nurse</option>
           <option value="cm">Case Mgr</option>
         </select>
+        <span v-if="is_complete==1">
+          between
+          <input v-model="startDate">
+          and
+          <input v-model="endDate">
+        </span>
         <button
           @click="$inertia.visit('/print-dashboard')"
           class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 text-xs rounded my-3 float-right"
@@ -22,12 +32,13 @@
         </button>
       </h2>
     </template>
-    <div class="mx-auto">
-    Totals:
-        <span v-for="(value, name) in totals" :key="name">
-          <b>{{ name }}</b>: {{ value }};&nbsp;&nbsp;&nbsp;
-        </span>
-        </div>
+    <div class="mx-auto text-center">
+      Totals:
+      <span v-for="(value, name) in totals" :key="name">
+        <b>{{ name }}</b
+        >: {{ value }};&nbsp;&nbsp;&nbsp;
+      </span>
+    </div>
     <edit-modal />
     <div class="py-12">
       <div class="max-w-full mx-auto sm:px-6 lg:px-8">
@@ -43,7 +54,7 @@
               </div>
             </div>
           </div>
-          <button
+          <button v-if="is_complete==0"
             @click="create()"
             class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded my-3"
           >
@@ -165,6 +176,9 @@ export default {
   data() {
     return {
       sortBy: "arr",
+      is_complete: this.$page.params?.is_complete || 0,
+      startDate: this.$moment().add(-2,"w").format("M/D/Y"),
+      endDate: this.$moment().add(1,"d").format("M/D/Y"),
       facilities: [
         { name: "Alexandria", id: "Alexandria" },
         { name: "NOLA", id: "NOLA" },
@@ -184,7 +198,7 @@ export default {
   computed: {
     encounters() {
       return this.$page.encounters
-        .filter((i) => i.is_complete == 0)
+        .filter((i) => i.is_complete == this.is_complete)
         .sort(this.sortFunction);
     },
     providers() {
@@ -214,6 +228,16 @@ export default {
     );
   },
   methods: {
+    refetch() {
+      this.$inertia.visit(this.route("encounter.index"), {
+        preserveScroll: true,
+        data: {
+          is_complete: this.is_complete,
+          startDate: this.startDate,
+          endDate: this.endDate,
+        },
+      });
+    },
     sortFunction(a, b) {
       switch (this.sortBy) {
         case "arr":
@@ -256,9 +280,10 @@ export default {
       let payload = {
         field_name: field,
         new_value: encounter[field],
+        queryString: window.location.search.replace(/^\?/,""),
         _method: "PUT",
       };
-      this.$inertia.post("/encounter/" + encounter.id, payload, {
+      this.$inertia.post(this.route("encounter.update", {encounter: encounter.id}), payload, {
         preserveScroll: true,
       });
     },
