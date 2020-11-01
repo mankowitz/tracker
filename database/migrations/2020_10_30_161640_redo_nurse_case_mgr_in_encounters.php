@@ -16,8 +16,8 @@ class RedoNurseCaseMgrInEncounters extends Migration
         Schema::table('encounters', function (Blueprint $table) {
             $table->dropColumn("nurse");
             $table->dropColumn("case_manager");
-            $table->foreignId('nurse_id')->constrained('users')->nullable();
-            $table->foreignId('case_manager_id')->constrained('users')->nullable();
+            $table->foreignId('nurse_id')->nullable()->constrained('users');
+            $table->foreignId('case_manager_id')->nullable()->constrained('users');
         });
     }
 
